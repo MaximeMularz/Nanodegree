@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Nanodegree</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="my_title">My Nanodegree Apps!</string>
+    <string name="media_streamer">Spotify Streamer</string>
+    <string name="super_duo1">Scores App</string>
+    <string name="super_duo2">LIBRARY APP</string>
+    <string name="ant_terminator">BUILD IT BIGGER</string>
+    <string name="materialize">BACON READER</string>
+    <string name="capstone">CAPSTONE MY OWN APP</string>
+    <string name="title_activity_spotify_streamer">SpotifyStreamer</string>
+    <string name="title_activity_top_ten_tracks">Top Ten</string>
+    <string name="picture">picture</string>
+    <string name="name">name</string>
+    <string name="linearlayoutAnimation">linear</string>
+    <string name="searchArtist">Search artist</string>
+    <string name="artistPicture">Artist picture</string>
+    <string name="noArtistFound">No artist found yet</string>
+    <string name="noTrackTopTen">No tracks in Top ten.</string>
+    <string name="albumPicture">Album picture</string>
+
+
+</resources>

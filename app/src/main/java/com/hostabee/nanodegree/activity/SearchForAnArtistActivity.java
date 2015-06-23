@@ -90,6 +90,7 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
         initListViewListener();
     }
 
+    /**/
     private void initListViewListener() {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -112,6 +113,7 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
         });
     }
 
+    /**/
     private void initSearchEditTextView() {
         mSearchView = (EditText) findViewById(R.id.searchView);
 

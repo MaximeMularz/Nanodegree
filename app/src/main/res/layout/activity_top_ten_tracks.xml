@@ -26,16 +26,20 @@
 
             <ImageView
                 android:id="@+id/artistPicture"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="120dp"
+                android:maxWidth="120dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:contentDescription="@string/artistPicture"
                 android:fitsSystemWindows="true"
                 android:padding="8dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/spotify"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

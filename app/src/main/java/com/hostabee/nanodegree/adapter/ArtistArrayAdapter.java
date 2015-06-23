@@ -52,11 +52,12 @@ public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
         }
 
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.text.setText(artists.get(position).name);
         //check if Artist has a picture
         if (artists.get(position).images.size() > 0) {
             Picasso.with(context).load(artists.get(position).images.get(0).url).into(holder.imageView);
         }
+        holder.text.setText(artists.get(position).name);
+
         return view;
     }
 

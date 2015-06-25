@@ -1,7 +1,6 @@
 package com.hostabee.nanodegree.activity;
 
 import android.content.Intent;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -18,7 +17,6 @@ import com.google.gson.Gson;
 import com.hostabee.nanodegree.R;
 import com.hostabee.nanodegree.Utility;
 import com.hostabee.nanodegree.adapter.TracksArrayAdapter;
-import com.hostabee.nanodegree.asyncTask.SearchArtistAsyncTask;
 import com.hostabee.nanodegree.asyncTask.SearchSoundTrackAsyncTask;
 import com.squareup.picasso.Picasso;
 

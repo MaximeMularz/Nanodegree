@@ -56,7 +56,10 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
         /*Set adn init Toolbar*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         mListView = (ListView) findViewById(R.id.listview_spotify);
 

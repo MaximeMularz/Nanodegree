@@ -2,19 +2,14 @@ package com.hostabee.nanodegree.asyncTask;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Artist;
-import kaaes.spotify.webapi.android.models.ArtistsPager;
-import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
 
-/**
+/**Search Top ten tack of an Artisit with Spotify api wrapper
  * Created by max on 09/06/2015.
  */
 public class SearchSoundTrackAsyncTask extends AsyncTask<String, Void, Tracks> {
@@ -32,9 +27,6 @@ public class SearchSoundTrackAsyncTask extends AsyncTask<String, Void, Tracks> {
     }
 
     private Tracks searchTopTrack(String artist) {
-
-        final String countryId = "FR";
-        final int limit = 10;
 
         SpotifyApi api = new SpotifyApi();
         SpotifyService spotify = api.getService();

@@ -15,7 +15,7 @@ import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Track;
 
-/**
+/**TracksArrayAdapter for RecyclerView in TopTenAcitivity
  * Created by max on 06/06/2015.
  */
 

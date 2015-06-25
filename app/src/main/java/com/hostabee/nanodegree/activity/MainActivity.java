@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
      */
     public void spotifyStreamer(View view) {
 
-        Intent i = new Intent(MainActivity.this, SearchForAnArtistActivity.class);
         startActivity(new Intent(this, SearchForAnArtistActivity.class));
     }
 

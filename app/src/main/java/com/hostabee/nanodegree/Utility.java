@@ -3,10 +3,8 @@ package com.hostabee.nanodegree;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 
-/**
+/**Somme Useful and recurrent methods
  * Created by max on 22/06/2015.
  */
 public class Utility {

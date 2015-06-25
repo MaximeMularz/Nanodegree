@@ -1,7 +1,6 @@
 package com.hostabee.nanodegree.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,7 @@ public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = null;
+        View view;
         if (convertView == null) {
             view = LayoutInflater.from(context).inflate(R.layout.row_artist, parent, false);
             final ViewHolder viewHolder = new ViewHolder();
@@ -54,7 +53,7 @@ public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
         ViewHolder holder = (ViewHolder) view.getTag();
         //check if Artist has a picture
         if (artists.get(position).images.size() > 0) {
-            Picasso.with(context).load(artists.get(position).images.get(0).url).into(holder.imageView);
+            Picasso.with(context).load(artists.get(position).images.get(artists.get(position).images.size()-1).url).into(holder.imageView);
         }
         holder.text.setText(artists.get(position).name);
 

@@ -16,7 +16,9 @@ import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.hostabee.nanodegree.R;
+import com.hostabee.nanodegree.Utility;
 import com.hostabee.nanodegree.adapter.TracksArrayAdapter;
+import com.hostabee.nanodegree.asyncTask.SearchArtistAsyncTask;
 import com.hostabee.nanodegree.asyncTask.SearchSoundTrackAsyncTask;
 import com.squareup.picasso.Picasso;
 
@@ -82,7 +84,12 @@ public class TopTenTracksActivity extends AppCompatActivity implements SearchSou
             mTrackArrayAdapter = new TracksArrayAdapter(getBaseContext(), tracks);
             mRecyclerView.setAdapter(mTrackArrayAdapter);
         } else {
-            new SearchSoundTrackAsyncTask(this).execute(mArtistId);
+            if (Utility.isNetworkAvailable(TopTenTracksActivity.this)) {
+                new SearchSoundTrackAsyncTask(this).execute(mArtistId);
+            } else {
+                Snackbar.make(TopTenTracksActivity.this.findViewById(R.id.layout_top_ten), "No Internet connexion", Snackbar.LENGTH_LONG).show();
+            }
+
         }
     }
 

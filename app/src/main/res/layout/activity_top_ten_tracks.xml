@@ -20,16 +20,16 @@
             android:elevation="3dp"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMargin="48dp"
-            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMargin="50dp"
+            app:expandedTitleMarginEnd="50dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/artistPicture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxHeight="120dp"
-                android:maxWidth="120dp"
+                android:maxHeight="100dp"
+                android:maxWidth="100dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:contentDescription="@string/artistPicture"

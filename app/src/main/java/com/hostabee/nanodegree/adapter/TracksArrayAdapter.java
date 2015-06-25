@@ -43,7 +43,6 @@ public class TracksArrayAdapter extends RecyclerView.Adapter<TracksArrayAdapter.
 
         @Override
         public void onClick(View v) {
-            int adapteurPosition = getAdapterPosition();
             //mClickHandler.onClick(this);
         }
     }
@@ -54,6 +53,7 @@ public class TracksArrayAdapter extends RecyclerView.Adapter<TracksArrayAdapter.
         this.mTracks = tracks;
     }
 
+    /*No implemented yet*/
     public interface TrackAdapterOnClickHandler {
         void onClick(TracksViewHolder vh);
     }
@@ -69,7 +69,11 @@ public class TracksArrayAdapter extends RecyclerView.Adapter<TracksArrayAdapter.
     public void onBindViewHolder(TracksViewHolder tracksViewHolder, int position) {
         tracksViewHolder.mTrackNameTextView.setText(mTracks.get(position).name);
         tracksViewHolder.mAlbumNameTextView.setText(mTracks.get(position).album.name);
-        Picasso.with(mContext).load(mTracks.get(position).album.images.get(0).url).into(tracksViewHolder.imageView);
+
+        //Select the low resolution
+        if (mTracks.get(position).album.images.size() > 0) {
+            Picasso.with(mContext).load(mTracks.get(position).album.images.get(mTracks.get(position).album.images.size()-1).url).into(tracksViewHolder.imageView);
+        }
     }
 
     @Override

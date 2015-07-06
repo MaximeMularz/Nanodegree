@@ -15,17 +15,17 @@ import java.util.List;
 
 import kaaes.spotify.webapi.android.models.Track;
 
-/**TracksArrayAdapter for RecyclerView in TopTenAcitivity
+/**
+ * TracksArrayAdapter for RecyclerView in TopTenAcitivity
  * Created by max on 06/06/2015.
  */
 
 
 public class TracksArrayAdapter extends RecyclerView.Adapter<TracksArrayAdapter.TracksViewHolder> {
 
-    //final private TrackAdapterOnClickHandler mClickHandler;
     private final List<Track> mTracks;
     private final Context mContext;
-
+    final private TrackAdapterOnClickHandler mClickHandler;
 
     public class TracksViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -35,32 +35,33 @@ public class TracksArrayAdapter extends RecyclerView.Adapter<TracksArrayAdapter.
 
         public TracksViewHolder(View view) {
             super(view);
-            mTrackNameTextView = (TextView) view.findViewById(R.id.trackName);
+            mTrackNameTextView = (TextView) view.findViewById(R.id.trackNameTextView);
             imageView = (ImageView) view.findViewById(R.id.albumPicture);
-            mAlbumNameTextView = (TextView) view.findViewById(R.id.albumName);
+            mAlbumNameTextView = (TextView) view.findViewById(R.id.albumNameTextView);
             view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            //mClickHandler.onClick(this);
+            int adapterPosition = getAdapterPosition();
+            mClickHandler.onClick(adapterPosition);
         }
     }
 
-    public TracksArrayAdapter(Context context, List<Track> tracks) {
+    public TracksArrayAdapter(Context context, TrackAdapterOnClickHandler dh, List<Track> tracks) {
         this.mContext = context;
-        //this.mClickHandler = dh;
+        this.mClickHandler = dh;
         this.mTracks = tracks;
     }
 
     /*No implemented yet*/
     public interface TrackAdapterOnClickHandler {
-        void onClick(TracksViewHolder vh);
+        void onClick(int position);
     }
 
     @Override
     public TracksViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view =  LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_track,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.row_track, viewGroup, false);
         view.setFocusable(true);
         return new TracksViewHolder(view);
     }
@@ -72,8 +73,12 @@ public class TracksArrayAdapter extends RecyclerView.Adapter<TracksArrayAdapter.
 
         //Select the low resolution
         if (mTracks.get(position).album.images.size() > 0) {
-            Picasso.with(mContext).load(mTracks.get(position).album.images.get(mTracks.get(position).album.images.size()-1).url).into(tracksViewHolder.imageView);
+            Picasso.with(mContext).load(mTracks.get(position).album.images.get(mTracks.get(position).album.images.size() - 1).url).into(tracksViewHolder.imageView);
         }
+    }
+
+    public Track getItem(int position) {
+        return mTracks.get(position);
     }
 
     @Override

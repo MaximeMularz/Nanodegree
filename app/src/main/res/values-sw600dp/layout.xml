@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="activity_search_for_an_artist" type="layout">
+        @layout/activity_search_for_an_artist_two_panes
+    </item>
+    <bool name="twoPane">true</bool>
+    <item name="fragment_search_for_an_artist" type="layout">
+        @layout/fragment_search_for_an_artist_two_panes
+    </item>
+    <item name="fragment_top_ten_tracks" type="layout">@layout/fragment_top_ten_tracks_two_panes
+    </item>
+</resources>

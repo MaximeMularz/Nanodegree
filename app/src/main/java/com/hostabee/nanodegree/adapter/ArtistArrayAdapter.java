@@ -44,7 +44,7 @@ public class ArtistArrayAdapter extends ArrayAdapter<Artist> {
             view = LayoutInflater.from(context).inflate(R.layout.row_artist, parent, false);
             final ViewHolder viewHolder = new ViewHolder();
             view.setTag(viewHolder);
-            viewHolder.text = (TextView) view.findViewById(R.id.artistName);
+            viewHolder.text = (TextView) view.findViewById(R.id.artistNameTextView);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.albumPicture);
         } else {
             view = convertView;

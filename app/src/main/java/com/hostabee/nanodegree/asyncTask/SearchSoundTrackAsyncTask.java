@@ -23,6 +23,7 @@ public class SearchSoundTrackAsyncTask extends AsyncTask<String, Void, Tracks> {
     }
 
     public SearchSoundTrackAsyncTask(ViewI viewI) {
+
         this.viewI = viewI;
     }
 

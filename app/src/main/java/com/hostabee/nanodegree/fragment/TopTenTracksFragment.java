@@ -1,12 +1,16 @@
 package com.hostabee.nanodegree.fragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +20,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.hostabee.nanodegree.R;
 import com.hostabee.nanodegree.Utility;
-import com.hostabee.nanodegree.activity.TrackPlayerActivity;
 import com.hostabee.nanodegree.adapter.TracksArrayAdapter;
 import com.hostabee.nanodegree.asyncTask.SearchSoundTrackAsyncTask;
 import com.squareup.picasso.Picasso;
@@ -51,6 +54,8 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
     private String mArtistName;
     private String mArtistPicture;
 
+    private boolean mTwoPane;
+
     private Object mPosition;
 
     private Callback mCallback;
@@ -65,7 +70,6 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
     @Bind(R.id.tracksEmpty)
     TextView mTacksEmptyTextView;
 
-    // TODO: Rename and change types and number of parameters
     public static TopTenTracksFragment newInstance(String artistId, String artistName, String artistPictureUrl) {
         TopTenTracksFragment fragment = new TopTenTracksFragment();
         Bundle args = new Bundle();
@@ -93,6 +97,7 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
             mArtistName = getArguments().getString(ARTIST_NAME);
             mArtistPicture = getArguments().getString(ARTIST_PICTURE);
         }
+        mTwoPane = getResources().getBoolean(R.bool.twoPane);
     }
 
     @Override
@@ -100,13 +105,30 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_top_ten_tracks, container, false);
+
+
+
+        if(!mTwoPane) {
+                 /*Set adn init Toolbar*/
+            Toolbar mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
+            ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+            if ( ((AppCompatActivity)getActivity()).getSupportActionBar() != null) {
+                ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) view.findViewById(R.id.collasping_toolbar);
+            collapsingToolbarLayout.setTitle(mArtistName);
+
+        }
+
+
+
+
+
         ButterKnife.bind(this, view);
         Picasso.with(getActivity()).load(mArtistPicture).into(mArtistPicitureImageView);
 
-        //mCollapsingToolbarLayout.setTitle(mArtistName);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
         if (mArtistId == null) return view;
 
@@ -125,6 +147,10 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
 
         }
 
+        //Toolbar toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Hello");
+        //CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) getView().findViewById(R.id.collasping_toolbar);
+        //collapsingToolbar.setTitle("Suleiman Ali Shakir");
         return view;
     }
 

@@ -5,9 +5,9 @@
 
 
     <!-- /fragment_track_player*/ -->
-    <dimen name="fragment_track_player_albumArtWorkImageView_with">200dp</dimen>
-    <dimen name="fragment_track_player_albumArtWorkImageView_height">200dp</dimen>
+    <dimen name="fragment_track_player_albumArtWorkImageView_with">100dp</dimen>
+    <dimen name="fragment_track_player_albumArtWorkImageView_height">100dp</dimen>
 
     <dimen name="fragment_track_player_width">300dp</dimen>
-    <dimen name="fragment_track_player_height">300dp</dimen>
+    <dimen name="fragment_track_player_height">200dp</dimen>
 </resources>

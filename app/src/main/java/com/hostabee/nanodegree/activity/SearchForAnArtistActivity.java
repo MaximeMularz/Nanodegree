@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -34,7 +33,6 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
     private static final String SEARCH_FOR_AN_ARTIST_TAG = "SEARCH_FOR_AN_ARTIST_TAG";
 
     private static final String TOP_TEN_TRACKS_TAG = "TOP_TEN_TRACKS_TAG";
-    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +59,15 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
                         .add(R.id.top_ten_track_container, topTenTracksFragment, TOP_TEN_TRACKS_TAG)
                         .commit();
             }
-
-            /*Set adn init Toolbar*/
-            mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
-            this.setSupportActionBar(mToolbar);
-            if (this.getSupportActionBar() != null) {
-                this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            }
         }
+
+           /*Set adn init Toolbar*/
+        Toolbar mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        this.setSupportActionBar(mToolbar);
+        if (this.getSupportActionBar() != null) {
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
     }
 
@@ -132,7 +131,6 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
 
     @Override
     public void onTrackClicked(int position, String tracksJson, String artistName) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
         TrackPlayerFragment fragment = TrackPlayerFragment.newInstance(position, tracksJson, artistName);
         fragment.show(getSupportFragmentManager(), "dialog");
     }

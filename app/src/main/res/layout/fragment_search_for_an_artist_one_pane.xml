@@ -8,17 +8,6 @@
     android:orientation="vertical"
     tools:context="com.hostabee.nanodegree.fragment.SearchForAnArtistFragment">
 
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="0dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:layout_scrollFlags="scroll|enterAlways">
-
-    </android.support.v7.widget.Toolbar>
-
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"

@@ -24,4 +24,6 @@ public class Utility {
                 activeNetwork.isConnectedOrConnecting();
     }
 
+
+
 }

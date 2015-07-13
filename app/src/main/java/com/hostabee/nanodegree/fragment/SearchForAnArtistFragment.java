@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +40,7 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     private String mArtistName;
     private String artitsListJson;
 
-    Callback mCallback;
+    private Callback mCallback;
 
     /*Views*/
     @Bind(R.id.listview_spotify)
@@ -55,7 +53,6 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     TextView mEmptyView;
 
     private int mPosition = ListView.INVALID_POSITION;
-    private boolean mTwoPane;
 
     public SearchForAnArtistFragment() {
         // Required empty public constructor
@@ -71,7 +68,7 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mTwoPane = getResources().getBoolean(R.bool.twoPane);
+        boolean mTwoPane = getResources().getBoolean(R.bool.twoPane);
     }
 
     @Override

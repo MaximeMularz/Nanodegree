@@ -4,7 +4,10 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-/**Somme Useful and recurrent methods
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Somme Useful and recurrent methods
  * Created by max on 22/06/2015.
  */
 public class Utility {
@@ -24,6 +27,20 @@ public class Utility {
                 activeNetwork.isConnectedOrConnecting();
     }
 
+    /**
+     *
+     *
+     * @param duration
+     * @return
+     */
 
+    static public String getDurationFromMsToMinSec(long duration) {
+        return String.format("%d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(duration),
+                TimeUnit.MILLISECONDS.toSeconds( duration) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                toMinutes(duration)));
+
+    }
 
 }

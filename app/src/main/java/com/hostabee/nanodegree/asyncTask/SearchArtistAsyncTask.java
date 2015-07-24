@@ -16,7 +16,6 @@ public class SearchArtistAsyncTask extends AsyncTask<String, Void, Artists> {
 
 
     private final ViewI viewI;
-    private final String TAG = "SearchArtistAsyncTask";
 
     public interface ViewI {
         void updateView(Artists artists);

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -27,11 +28,7 @@ import kaaes.spotify.webapi.android.models.Artists;
 
 public class SearchForAnArtistFragment extends Fragment implements SearchArtistAsyncTask.ViewI {
 
-    /*static members*/
-    private final String TAG = "SearchF";
-    private static final String ARTIST_ID = "artistId";
     private static final String ARTIST_NAME = "artistName";
-    private static final String ARTIST_PICTURE = "artistPicture";
     private static final String ARTIST_LIST_KEY = "artistListJson";
     private static final String SELECTED_KEY = "selected_position";
 
@@ -43,14 +40,21 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     private Callback mCallback;
 
     /*Views*/
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.listview_spotify)
     ListView mListView;
 
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.searchView)
     SearchView mSearchView;
 
+    @SuppressWarnings("WeakerAccess")
     @Bind(R.id.listview_artist_empty)
     TextView mEmptyView;
+
+    @SuppressWarnings("WeakerAccess")
+    @Bind(R.id.mainLayout)
+    LinearLayout mMainLayoutLinearLayout;
 
     private int mPosition = ListView.INVALID_POSITION;
 
@@ -67,7 +71,6 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         boolean mTwoPane = getResources().getBoolean(R.bool.twoPane);
     }
 
@@ -141,7 +144,7 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
                             if (Utility.isNetworkAvailable(getActivity())) {
                                 new SearchArtistAsyncTask(SearchForAnArtistFragment.this).execute(mArtistName);
                             } else {
-                                Snackbar.make(getView().findViewById(R.id.mainLayout), "No Internet connexion", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(mMainLayoutLinearLayout, "No Internet connexion", Snackbar.LENGTH_LONG).show();
                             }
                         InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                         mgr.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
@@ -186,7 +189,7 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
 
         if (artists == null || artists.artists.size() < 1) {
             /** Display toast with text as param */
-            Snackbar.make(getView().findViewById(R.id.mainLayout), "The artist " + mArtistName + " is not found (asks to refine search)", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(mMainLayoutLinearLayout, "The artist " + mArtistName + " is not found (asks to refine search)", Snackbar.LENGTH_LONG).show();
             mListView.setAdapter(null);
             artitsListJson = null;
             mArtistArrayAdapter = null;

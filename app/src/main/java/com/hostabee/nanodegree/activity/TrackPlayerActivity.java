@@ -1,5 +1,6 @@
 package com.hostabee.nanodegree.activity;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,21 +10,22 @@ import android.view.MenuItem;
 import com.hostabee.nanodegree.R;
 import com.hostabee.nanodegree.fragment.TrackPlayerFragment;
 
-public class TrackPlayerActivity extends AppCompatActivity implements TrackPlayerFragment.Callback {
+public class TrackPlayerActivity extends AppCompatActivity {
 
     private static final String TRACKS_LIST_KEY = "tracksListJson";
     private static final String ROW_SELECTED_POSITION = "position";
+    private static final String TRACK_PLAYER_TAG = "trackPlayerTag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_player);
 
-        Log.v("TrackPlayerActivity","TrackPlayerActivity");
+        Log.v("TrackPlayerActivity", "TrackPlayerActivity");
 
-       TrackPlayerFragment fragment = new TrackPlayerFragment();
+        TrackPlayerFragment fragment = new TrackPlayerFragment();
         fragment.setArguments(getIntent().getExtras());
-        fragment.show(getSupportFragmentManager(), "dialog");
+        fragment.show(getSupportFragmentManager(), TRACK_PLAYER_TAG);
 
 
         if (savedInstanceState == null) {
@@ -54,20 +56,5 @@ public class TrackPlayerActivity extends AppCompatActivity implements TrackPlaye
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPlay() {
-
-    }
-
-    @Override
-    public void onForward() {
-
-    }
-
-    @Override
-    public void onBack() {
-
     }
 }

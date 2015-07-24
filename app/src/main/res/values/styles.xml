@@ -46,4 +46,23 @@
         <item name="android:layout_margin">10dp</item>
     </style>
 
+
+
+    <!-- Style Progress Bar -->
+    <style name="GenericProgressBackground" parent="AppTheme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/material_blue_grey_800</item>
+
+    </style>
+
+    <style name="GenericProgressIndicator" parent="@android:style/Widget.ProgressBar.Large">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:indeterminate">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:startColor">@color/white</item>
+        <item name="android:endColor">@color/white</item>
+    </style>
+
 </resources>

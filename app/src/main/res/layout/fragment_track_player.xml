@@ -1,12 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_track_player"
-    android:layout_width="@dimen/fragment_track_player_width"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center|center_horizontal|center_vertical"
+    android:minWidth="@dimen/fragment_track_player_width"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_gravity="center"
-    tools:context="com.hostabee.nanodegree.fragment.TrackPlayerFragment">
+    tools:context="com.hostabee.nanodegree.fragment.TrackPlayerFragment"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true" >
+
 
     <TextView
         android:id="@+id/artistNameTextView"
@@ -22,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:singleLine="true"
         android:text="AlbumName"
-
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
@@ -38,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:singleLine="true"
         android:text="TrackName"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -74,7 +79,16 @@
     </LinearLayout>
 
 
+    <ProgressBar
+        android:id="@+id/loadingPanel"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        />
+
     <LinearLayout
+        android:id="@+id/playerButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

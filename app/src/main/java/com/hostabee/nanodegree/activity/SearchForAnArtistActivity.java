@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,7 +18,7 @@ import com.hostabee.nanodegree.fragment.TrackPlayerFragment;
 
 import kaaes.spotify.webapi.android.models.Artist;
 
-public class SearchForAnArtistActivity extends AppCompatActivity implements SearchForAnArtistFragment.Callback, TopTenTracksFragment.Callback {
+public class SearchForAnArtistActivity extends AppCompatActivity implements SearchForAnArtistFragment.Callback, TopTenTracksFragment.Callback, TrackPlayerFragment.Callback {
 
     private static final String ARTIST_ID = "artistId";
     private static final String ARTIST_PICTURE = "artistPicture";
@@ -65,10 +66,8 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
         Toolbar mToolbar = (Toolbar) this.findViewById(R.id.toolbar);
         this.setSupportActionBar(mToolbar);
         if (this.getSupportActionBar() != null) {
-            this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
-
-
     }
 
     @Override
@@ -80,8 +79,7 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_spotify_streamer, menu);
-        if (mTwoPane) return false;
-        return true;
+        return !mTwoPane;
     }
 
     @Override
@@ -108,13 +106,13 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
     @Override
     public void onArtistClicked(Artist artist) {
 
-
         if (mTwoPane) {
-
             FragmentManager fm = getSupportFragmentManager();
             TopTenTracksFragment topTenTracksFragment = (TopTenTracksFragment) fm.findFragmentByTag(TOP_TEN_TRACKS_TAG);
             new SearchSoundTrackAsyncTask(topTenTracksFragment).execute(artist.id);
-            this.getSupportActionBar().setSubtitle(artist.name);
+            topTenTracksFragment.setArtistName(artist.name);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setSubtitle(artist.name);
         } else {
             Intent intent = new Intent(this, TopTenTracksActivity.class);
             intent.putExtra(ARTIST_ID, artist.id);
@@ -132,7 +130,14 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
     @Override
     public void onTrackClicked(int position, String tracksJson, String artistName) {
         TrackPlayerFragment fragment = TrackPlayerFragment.newInstance(position, tracksJson, artistName);
+        Log.v("Search","Artist Name : " + artistName );
         fragment.show(getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    public void onTrackChange(int position) {
+        TopTenTracksFragment fragment = (TopTenTracksFragment) getSupportFragmentManager().findFragmentByTag(TOP_TEN_TRACKS_TAG);
+        fragment.updateRow(position);
     }
 }
 

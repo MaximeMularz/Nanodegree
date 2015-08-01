@@ -252,6 +252,7 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         }
         if (mArtistName != null) {
             shareIntent.putExtra(Intent.EXTRA_TEXT, "I love this artist " + mArtistName);
+            return shareIntent;
         }
         shareIntent.putExtra(Intent.EXTRA_TEXT, "I love this app");
 

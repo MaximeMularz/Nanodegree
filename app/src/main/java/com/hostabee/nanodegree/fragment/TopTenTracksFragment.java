@@ -42,7 +42,39 @@ import kaaes.spotify.webapi.android.models.Tracks;
  */
 public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAsyncTask.ViewI, TracksArrayAdapter.TrackAdapterOnClickHandler {
 
+    //keys
+    private static final String TRACK_SELECTED_ID = "track_id";
+    private static final String TRACKS_LIST_KEY = "tracksListJson";
+    private static final String ARTIST_ID = "artistId";
+    private static final String ARTIST_PICTURE = "artistPicture";
+    private static final String ARTIST_NAME = "artistName";
+
+    //fields members
+    private String mArtistId;
+    private String mArtistName;
+    private String mArtistPicture;
+    private String mTrackId;
+    private String mTracksJson;
+    private int mPosition = -1;
+    private boolean mTwoPane;
+
+    //Activity interface
+    private Callback mCallback;
+
+    //others
+    private static final String TAG = TopTenTracksFragment.class.getSimpleName();
+
+    /*Views*/
+    @Bind(R.id.artistPicture)
+    ImageView mArtistPicitureImageView;
+    @Bind(R.id.recyclerview_topten)
+    RecyclerView mRecyclerView;
+    @Bind(R.id.tracksEmpty)
+    TextView mTacksEmptyTextView;
+
+    private ShareActionProvider mShareActionProvider;
     private LinearLayoutManager mLinearLayoutManager;
+    private TracksArrayAdapter mTrackArrayAdapter;
 
     public static TopTenTracksFragment newInstance(String artistId, String artistName, String artistPictureUrl) {
         TopTenTracksFragment fragment = new TopTenTracksFragment();
@@ -68,7 +100,9 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         }
         mTwoPane = getResources().getBoolean(R.bool.twoPane);
         setHasOptionsMenu(true);
+        setRetainInstance(true);
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -77,6 +111,8 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
 
         // Get the provider and hold onto it to set/change the share intent.
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        mShareActionProvider.setShareIntent(shareIntentUpdate());
 
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -88,7 +124,7 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         View view = inflater.inflate(R.layout.fragment_top_ten_tracks, container, false);
 
         if (!mTwoPane) {
-                 /*Set adn init Toolbar*/
+                 /*Set add and init Toolbar*/
             Toolbar tolbar = (Toolbar) view.findViewById(R.id.toolbar);
             AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
 
@@ -111,7 +147,9 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         mRecyclerView.setSelected(true);
 
         //If no artist id, stop process.
-        if (mArtistId == null) return view;
+        if (mArtistId == null) {
+            return view;
+        }
 
         /**Check if state saved*/
         if (savedInstanceState != null) {
@@ -154,7 +192,6 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
     @Override
     public void updateView(Tracks tracks) {
         if (tracks == null || tracks.tracks.size() < 1) {
-
             /** Display toast with text as param */
             Snackbar.make(getView(), "The artist " + mArtistName + " has not top ten", Snackbar.LENGTH_LONG).show();
             mRecyclerView.setVisibility(View.INVISIBLE);
@@ -182,7 +219,7 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         mCallback.onTrackClicked(position, mTracksJson, mArtistName);
 
         //UpdateMenu with new intent
-//        mShareActionProvider.setShareIntent(shareSelectedTrack());
+        mShareActionProvider.setShareIntent(shareIntentUpdate());
     }
 
     public void setArtistName(String name) {
@@ -193,7 +230,12 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         mPosition = position;
         mTrackId = mTrackArrayAdapter.getItem(position).id;
         mTrackArrayAdapter.setId(mTrackId);
-        mLinearLayoutManager.scrollToPositionWithOffset(position,20);
+        mLinearLayoutManager.scrollToPositionWithOffset(position, 20);
+    }
+
+    public void setArtistId(String artistId) {
+        Log.v(TAG, "setArtistId " + artistId);
+        this.mArtistId = artistId;
     }
 
     public interface Callback {
@@ -201,45 +243,18 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
     }
 
     // Share ArtistName and Selected Track
-    private Intent shareSelectedTrack() {
+    private Intent shareIntentUpdate() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "I love this song " + mTrackArrayAdapter.getItem(mPosition).name + " by " + mArtistName);
+        if (mPosition > 0) {
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "I love this song " + mTrackArrayAdapter.getItem(mPosition).name + " by " + mArtistName);
+            return shareIntent;
+        }
+        if (mArtistName != null) {
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "I love this artist " + mArtistName);
+        }
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "I love this app");
+
         return shareIntent;
     }
-
-    //****************************************************
-    //Fragments TAGS
-    private static final String TRACK_PLAYER_TAG = "trackPlayerTag";
-
-    private static final String TAG = TopTenTracksFragment.class.getSimpleName();
-    private static final String TRACK_SELECTED_ID = "track_id";
-    private static final String TRACKS_LIST_KEY = "tracksListJson";
-    private static final String ARTIST_ID = "artistId";
-    private static final String ARTIST_PICTURE = "artistPicture";
-    private static final String ARTIST_NAME = "artistName";
-
-    //fields members
-    private String mArtistId;
-    private String mArtistName;
-    private String mArtistPicture;
-    private String mTrackId;
-    private String mTracksJson;
-    private int mPosition = -1;
-
-    private boolean mTwoPane;
-    private Callback mCallback;
-
-    private TracksArrayAdapter mTrackArrayAdapter;
-
-    /*Views*/
-    @Bind(R.id.artistPicture)
-    ImageView mArtistPicitureImageView;
-    @Bind(R.id.recyclerview_topten)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.tracksEmpty)
-    TextView mTacksEmptyTextView;
-    private ShareActionProvider mShareActionProvider;
-
-
 }

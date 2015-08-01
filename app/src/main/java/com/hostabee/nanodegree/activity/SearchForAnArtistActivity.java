@@ -1,12 +1,10 @@
 package com.hostabee.nanodegree.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,20 +18,20 @@ import kaaes.spotify.webapi.android.models.Artist;
 
 public class SearchForAnArtistActivity extends AppCompatActivity implements SearchForAnArtistFragment.Callback, TopTenTracksFragment.Callback, TrackPlayerFragment.Callback {
 
+    //Keys
     private static final String ARTIST_ID = "artistId";
     private static final String ARTIST_PICTURE = "artistPicture";
-    private static final String ARTIST_LIST_KEY = "artistListJson";
-    private static final String SELECTED_KEY = "selected_position";
-
-    private static final String TRACKS_LIST_KEY = "tracksListJson";
-    private static final String ROW_SELECTED_POSITION = "position";
     private static final String ARTIST_NAME = "artistName";
-    private boolean mTwoPane;
 
-
+    //Fragment tags
     private static final String SEARCH_FOR_AN_ARTIST_TAG = "SEARCH_FOR_AN_ARTIST_TAG";
-
     private static final String TOP_TEN_TRACKS_TAG = "TOP_TEN_TRACKS_TAG";
+    private static final String TRACK_PLAYER_TAG = "TRACK_PLAYER_TAG";
+
+    //members
+    private boolean mTwoPane;
+    private String mArtistId;
+    private String mArtistName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,25 +39,13 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
 
         mTwoPane = getResources().getBoolean(R.bool.twoPane);
 
-
         setContentView(R.layout.activity_search_for_an_artist);
-        SearchForAnArtistFragment fragment = new SearchForAnArtistFragment();
 
         if (savedInstanceState == null) {
+            SearchForAnArtistFragment fragment = new SearchForAnArtistFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.search_artist_container, fragment, SEARCH_FOR_AN_ARTIST_TAG)
                     .commit();
-        }
-
-        if (mTwoPane) {
-
-            TopTenTracksFragment topTenTracksFragment = new TopTenTracksFragment();
-
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.top_ten_track_container, topTenTracksFragment, TOP_TEN_TRACKS_TAG)
-                        .commit();
-            }
         }
 
            /*Set adn init Toolbar*/
@@ -68,17 +54,42 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
         if (this.getSupportActionBar() != null) {
             this.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
+
+
+        if (mTwoPane) {
+
+            if (savedInstanceState != null) {
+                TopTenTracksFragment fragment1 = (TopTenTracksFragment) getSupportFragmentManager().findFragmentByTag(TOP_TEN_TRACKS_TAG);
+                mArtistId = savedInstanceState.getString(ARTIST_ID);
+                mArtistName = savedInstanceState.getString(ARTIST_NAME);
+                fragment1.setArtistId(mArtistId);
+                if (getSupportActionBar() != null)
+                    getSupportActionBar().setSubtitle(mArtistName);
+            } else {
+                TopTenTracksFragment topTenTracksFragment = new TopTenTracksFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.top_ten_track_container, topTenTracksFragment, TOP_TEN_TRACKS_TAG)
+                        .commit();
+            }
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(ARTIST_ID, mArtistId);
+        savedInstanceState.putString(ARTIST_NAME, mArtistName);
         super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_spotify_streamer, menu);
+
+        if (mTwoPane) {
+            getMenuInflater().inflate(R.menu.menu_top_ten_tracks, menu);
+        } else {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_spotify_streamer, menu);
+        }
         return !mTwoPane;
     }
 
@@ -111,6 +122,8 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
             TopTenTracksFragment topTenTracksFragment = (TopTenTracksFragment) fm.findFragmentByTag(TOP_TEN_TRACKS_TAG);
             new SearchSoundTrackAsyncTask(topTenTracksFragment).execute(artist.id);
             topTenTracksFragment.setArtistName(artist.name);
+            mArtistId = artist.id;
+            mArtistName = artist.name;
             if (getSupportActionBar() != null)
                 getSupportActionBar().setSubtitle(artist.name);
         } else {
@@ -124,16 +137,15 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
             }
             startActivity(intent);
         }
-
     }
 
     @Override
     public void onTrackClicked(int position, String tracksJson, String artistName) {
         TrackPlayerFragment fragment = TrackPlayerFragment.newInstance(position, tracksJson, artistName);
-        Log.v("Search","Artist Name : " + artistName );
-        fragment.show(getSupportFragmentManager(), "dialog");
+        fragment.show(getSupportFragmentManager(), TRACK_PLAYER_TAG);
     }
 
+    //update
     @Override
     public void onTrackChange(int position) {
         TopTenTracksFragment fragment = (TopTenTracksFragment) getSupportFragmentManager().findFragmentByTag(TOP_TEN_TRACKS_TAG);

@@ -28,6 +28,7 @@ import kaaes.spotify.webapi.android.models.Artists;
 
 public class SearchForAnArtistFragment extends Fragment implements SearchArtistAsyncTask.ViewI {
 
+    //Keys
     private static final String ARTIST_NAME = "artistName";
     private static final String ARTIST_LIST_KEY = "artistListJson";
     private static final String SELECTED_KEY = "selected_position";
@@ -36,7 +37,9 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     private ArtistArrayAdapter mArtistArrayAdapter;
     private String mArtistName;
     private String artitsListJson;
+    private int mPosition = ListView.INVALID_POSITION;
 
+    // Activity interface
     private Callback mCallback;
 
     /*Views*/
@@ -56,22 +59,13 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
     @Bind(R.id.mainLayout)
     LinearLayout mMainLayoutLinearLayout;
 
-    private int mPosition = ListView.INVALID_POSITION;
-
     public SearchForAnArtistFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        boolean mTwoPane = getResources().getBoolean(R.bool.twoPane);
     }
 
     @Override
@@ -105,11 +99,9 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
             }
         }
 
-
         initSearchEditTextView();
 
         initListViewListener();
-
 
         return view;
     }
@@ -163,11 +155,6 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
         super.onAttach(activity);
         mCallback = (Callback) activity;
 
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ import kaaes.spotify.webapi.android.models.Tracks;
 /**
  * TrackPlayerFragment is used for playing soundtrack
  */
-public class TrackPlayerFragment extends DialogFragment {
+public class TrackPlayerFragment extends DialogFragment implements SeekBar.OnSeekBarChangeListener {
 
     //Keys
     private static final String TRACKS_LIST_KEY = "tracksListJson";
@@ -69,6 +70,7 @@ public class TrackPlayerFragment extends DialogFragment {
     // others
     private static final String TAG = TrackPlayerFragment.class.getName();
     private static final String COM_HOSTABEE_BROADCAST_ON_PREPARED = "com.hostabee.broadcast.onPrepared";
+    private static final String COM_HOSTABEE_BROADCAST_ON_SEEK_COMPLETE = "com.hostabee.broadcast.SeekComplete";
 
     // handler for Runnable
     private final Handler mHandler = new Handler();
@@ -94,7 +96,6 @@ public class TrackPlayerFragment extends DialogFragment {
     ProgressBar mLoadingRelativeLayout;
     @Bind(R.id.playerButtons)
     LinearLayout playerButtons;
-
 
 
     public TrackPlayerFragment() {
@@ -124,6 +125,8 @@ public class TrackPlayerFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_track_player, container, false);
         ButterKnife.bind(this, view);
 
+        mSeeBar.setOnSeekBarChangeListener(this);
+
         playerButtons.setVisibility(View.VISIBLE);
 
         Bundle arguments = getArguments();
@@ -138,6 +141,8 @@ public class TrackPlayerFragment extends DialogFragment {
             mPosition = savedInstanceState.getInt(POSITION);
             startTime = savedInstanceState.getInt(START_TIME);
         }
+
+        hideMediaController();
 
         return view;
     }
@@ -174,6 +179,7 @@ public class TrackPlayerFragment extends DialogFragment {
         else mPosition = mTracks.size() - 1;
         updateTrackInfo();
         musicSrv.preloadTrack(mPosition);
+        hideMediaController();
         // Inform TopTenActivity that track has changed
         mCallback.onTrackChange(mPosition);
 
@@ -200,14 +206,13 @@ public class TrackPlayerFragment extends DialogFragment {
         else mPosition = 0;
         updateTrackInfo();
         musicSrv.preloadTrack(mPosition);
+        hideMediaController();
         // Inform TopTenActivity that track has changed
         mCallback.onTrackChange(mPosition);
     }
 
 
     private void updateTrackInfo() {
-
-        hideMediaController();
 
         mHandler.removeCallbacksAndMessages(null);
 
@@ -291,6 +296,7 @@ public class TrackPlayerFragment extends DialogFragment {
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction(COM_HOSTABEE_BROADCAST_ON_PREPARED);
+        mIntentFilter.addAction(COM_HOSTABEE_BROADCAST_ON_SEEK_COMPLETE);
     }
 
 
@@ -328,6 +334,24 @@ public class TrackPlayerFragment extends DialogFragment {
         mHandler.removeCallbacksAndMessages(null);
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+            musicSrv.seekTo(progress);
+            seekBar.setProgress(progress);
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
 
     public interface Callback {
         void onTrackChange(int position);
@@ -340,20 +364,32 @@ public class TrackPlayerFragment extends DialogFragment {
 
             if (intent.getAction().equals(COM_HOSTABEE_BROADCAST_ON_PREPARED)) {
                 displayMediaController();
+                return;
+            }
+
+            if (intent.getAction().equals(COM_HOSTABEE_BROADCAST_ON_SEEK_COMPLETE)) {
+                mPlayButton.setImageResource(R.drawable.ic_play_arrow_black_18dp);
+                return;
             }
         }
     };
 
     private void displayMediaController() {
+        Log.v(TAG, "displayMediaController");
         mLoadingRelativeLayout.setVisibility(View.GONE);
         playerButtons.setVisibility(View.VISIBLE);
-        mPlayButton.setImageResource(R.drawable.ic_play_arrow_black_18dp);
+        if (musicSrv.isPlaying()) {
+            mPlayButton.setImageResource(R.drawable.ic_pause_black_18dp);
+        } else {
+            mPlayButton.setImageResource(R.drawable.ic_play_arrow_black_18dp);
+        }
         mSeeBar.setMax(musicSrv.getDuration());
     }
 
     private void hideMediaController() {
-        mLoadingRelativeLayout.setVisibility(View.VISIBLE);
+        Log.v(TAG, "hideMediaController");
         playerButtons.setVisibility(View.GONE);
+        mLoadingRelativeLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

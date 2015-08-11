@@ -167,9 +167,7 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
             if (Utility.isNetworkAvailable(getActivity())) {
                 new SearchSoundTrackAsyncTask(this).execute(mArtistId);
             } else {
-                View layout = getView().findViewById(R.id.layout_top_ten);
-                if (layout != null)
-                    Snackbar.make(layout, "No Internet connexion", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(view  , "No Internet connexion", Snackbar.LENGTH_LONG).show();
             }
         }
 
@@ -215,6 +213,11 @@ public class TopTenTracksFragment extends Fragment implements SearchSoundTrackAs
         //save track id
         mTrackId = mTrackArrayAdapter.getItem(position).id;
 
+        // if no internet connexion skip inform user and do not share data with activity
+        if(!Utility.isNetworkAvailable(getActivity().getApplicationContext())) {
+            Snackbar.make(getView(), "No Internet connexion", Snackbar.LENGTH_LONG).show();
+            return;
+        }
         // Throw event to the Activity
         mCallback.onTrackClicked(position, mTracksJson, mArtistName);
 

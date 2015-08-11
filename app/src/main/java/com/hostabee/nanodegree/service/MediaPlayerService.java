@@ -18,13 +18,15 @@ import kaaes.spotify.webapi.android.models.Track;
 /*
 MediaPlayerService is used to play Music
  */
-public class MediaPlayerService extends Service implements MediaPlayer.OnPreparedListener {
+public class MediaPlayerService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener {
+
 
     private final IBinder musicBind = new MusicBinder();
 
     private static final String TAG = "MediaPlayerService";
 
     private static final String COM_HOSTABEE_BROADCAST_ON_PREPARED = "com.hostabee.broadcast.onPrepared";
+    private static final String COM_HOSTABEE_BROADCAST_ON_SEEK_COMPLETE = "com.hostabee.broadcast.SeekComplete";
 
     private MediaPlayer mMediaPlayer = null;
 
@@ -45,6 +47,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
         mMediaPlayer = new MediaPlayer();
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
         super.onCreate();
     }
 
@@ -121,6 +124,10 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
             return -1;
     }
 
+    public void seekTo(int position) {
+        mMediaPlayer.seekTo(position);
+    }
+
     /**
      * Called when Track is ready, send info to Activity
      */
@@ -128,6 +135,19 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public void onPrepared(MediaPlayer player) {
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(COM_HOSTABEE_BROADCAST_ON_PREPARED);
+        sendBroadcast(broadcastIntent);
+        mMediaPlayer.start();
+        Log.v(TAG, "Onprepared");
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        Log.v(TAG, "onCompletion");
+        mMediaPlayer.pause();
+        pause = true;
+        mMediaPlayer.seekTo(0);
+        Intent broadcastIntent = new Intent();
+        broadcastIntent.setAction(COM_HOSTABEE_BROADCAST_ON_SEEK_COMPLETE);
         sendBroadcast(broadcastIntent);
     }
 

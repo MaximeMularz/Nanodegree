@@ -113,11 +113,14 @@ public class SearchForAnArtistFragment extends Fragment implements SearchArtistA
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Artist artist = mArtistArrayAdapter.getItem(position);
+                mPosition = position;
+                // if no internet connexion skip inform user and do not share data with activity
+                if (!Utility.isNetworkAvailable(getActivity().getApplicationContext())) {
+                    Snackbar.make(getView(), "No Internet connexion", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
 
                 mCallback.onArtistClicked(artist);
-
-                mPosition = position;
-
             }
         });
     }

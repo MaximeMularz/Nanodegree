@@ -3,12 +3,14 @@ package com.hostabee.nanodegree.activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.hostabee.nanodegree.R;
+import com.hostabee.nanodegree.Utility;
 import com.hostabee.nanodegree.fragment.TopTenTracksFragment;
 import com.hostabee.nanodegree.fragment.TrackPlayerFragment;
 
@@ -80,6 +82,8 @@ public class TopTenTracksActivity extends AppCompatActivity implements TopTenTra
 
     @Override
     public void onTrackClicked(int position, String tracksJson, String artistName) {
+
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         fragment = TrackPlayerFragment.newInstance(position, tracksJson, artistName);
         fragment.show(getSupportFragmentManager(), TRACK_PLAYER_TAG);

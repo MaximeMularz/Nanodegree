@@ -2,6 +2,7 @@ package com.hostabee.nanodegree.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.hostabee.nanodegree.R;
+import com.hostabee.nanodegree.Utility;
 import com.hostabee.nanodegree.asyncTask.SearchSoundTrackAsyncTask;
 import com.hostabee.nanodegree.fragment.SearchForAnArtistFragment;
 import com.hostabee.nanodegree.fragment.TopTenTracksFragment;
@@ -116,7 +118,6 @@ public class SearchForAnArtistActivity extends AppCompatActivity implements Sear
 
     @Override
     public void onArtistClicked(Artist artist) {
-
         if (mTwoPane) {
             FragmentManager fm = getSupportFragmentManager();
             TopTenTracksFragment topTenTracksFragment = (TopTenTracksFragment) fm.findFragmentByTag(TOP_TEN_TRACKS_TAG);
